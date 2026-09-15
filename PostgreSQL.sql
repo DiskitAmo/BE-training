@@ -99,3 +99,4 @@ FROM users AS u
 JOIN posts AS p
     ON u.id = p.user_id;
 
+SELECT current_user;SELECT current_database();
