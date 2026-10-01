@@ -148,6 +148,20 @@ async function main() {
     return { user, post };
   });
   console.log("Transaction result:", result);
+
+  //TASK 4f
+  //   const posts = await prisma.post.findMany({
+  //   include: {
+  //     author: true,
+  //     _count: {
+  //       select: {
+  //         comments: true
+  //       }
+  //     }
+  //   }
+  // });
+
+  // console.log(posts);
 }
 
 main()
