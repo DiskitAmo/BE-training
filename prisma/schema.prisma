@@ -39,25 +39,36 @@ enum Role {
   ADMIN
 }
 //TASK 4F
-// model User {
-//   id    Int    @id @default(autoincrement())
-//   name  String
-//   email String @unique
-//   posts Post[]
-// }
+model User1 {
+  id    Int    @id @default(autoincrement())
+  name  String
+  email String @unique
+  posts Post1[]
+}
 
-// model Post {
-//   id        Int       @id @default(autoincrement())
-//   title     String
-//   content   String?
-//   authorId  Int
-//   author    User      @relation(fields: [authorId], references: [id])
-//   comments  Comment[]
-// }
+model Post1 {
+  id        Int       @id @default(autoincrement())
+  title     String
+  content   String?
+  authorId  Int
+  author    User1      @relation(fields: [authorId], references: [id])
+  comments  Comment[]
+}
 
-// model Comment {
-//   id      Int    @id @default(autoincrement())
-//   content String
-//   postId  Int
-//   post    Post   @relation(fields: [postId], references: [id])
-// }
+model Comment {
+  id      Int    @id @default(autoincrement())
+  content String
+  postId  Int
+  post    Post1   @relation(fields: [postId], references: [id])
+}
+
+// TASK 5A / 5B
+model BlogPost {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String
+  status    String
+  authorId  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

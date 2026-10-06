@@ -128,26 +128,26 @@ async function main() {
   //   },
   // });
   // console.log("Upserted user:", upsertedUser);
-  const result = await prisma.$transaction(async (tx) => {
-    const user = await tx.user.create({
-      data: {
-        name: "Transaction User",
-        email: "transaction@example.com",
-        isAdmin: false,
-        preferences: { theme: "dark", notifications: true },
-      },
-    });
-    const post = await tx.post.create({
-      data: {
-        rating: 4.7,
-        authorId: user.id,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-    });
-    return { user, post };
-  });
-  console.log("Transaction result:", result);
+  // const result = await prisma.$transaction(async (tx) => {
+  //   const user = await tx.user.create({
+  //     data: {
+  //       name: "Transaction User",
+  //       email: "transaction@example.com",
+  //       isAdmin: false,
+  //       preferences: { theme: "dark", notifications: true },
+  //     },
+  //   });
+  //   const post = await tx.post.create({
+  //     data: {
+  //       rating: 4.7,
+  //       authorId: user.id,
+  //       createdAt: new Date(),
+  //       updatedAt: new Date(),
+  //     },
+  //   });
+  //   return { user, post };
+  // });
+  // console.log("Transaction result:", result);
 
   //TASK 4f
   //   const posts = await prisma.post.findMany({
@@ -162,6 +162,24 @@ async function main() {
   // });
 
   // console.log(posts);
+
+  await prisma.blogPost.createMany({
+    data: [
+      {
+        title: "First post",
+        content: "Hello",
+        status: "published",
+        authorId: 1,
+      },
+      { title: "Second post", content: "World", status: "draft", authorId: 1 },
+      {
+        title: "Third post",
+        content: "Again",
+        status: "published",
+        authorId: 2,
+      },
+    ],
+  });
 }
 
 main()
