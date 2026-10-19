@@ -164,4 +164,4 @@ const macroAndMicroTaskExample = () => {
   console.log("End"); //2
 };
 
-macroAndMicroTaskExample();
+//macroAndMicroTaskExample();
