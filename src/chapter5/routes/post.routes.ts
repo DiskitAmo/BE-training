@@ -133,5 +133,53 @@ router.put(
     }
   },
 );
+// app.put(
+//   "/posts/:id",
+//   authenticateToken,
+//   async (req, res, next) => {
+//     try {
+//       const post = await prisma.post.findUnique({
+//         where: { id: req.params.id },
+//         select: {
+//           id: true,
+//           authorId: true
+//         }
+//       });
+
+//       if (!post) {
+//         return res.status(404).json({
+//           error: {
+//             code: "NOT_FOUND",
+//             message: "Post not found"
+//           }
+//         });
+//       }
+
+//       const isOwner = post.authorId === req.user.id;
+//       const isAdmin = req.user.role === "ADMIN";
+
+//       if (!isOwner && !isAdmin) {
+//         return res.status(403).json({
+//           error: {
+//             code: "FORBIDDEN",
+//             message: "You cannot edit this post"
+//           }
+//         });
+//       }
+
+//       const updatedPost = await prisma.post.update({
+//         where: { id: post.id },
+//         data: {
+//           title: req.body.title,
+//           content: req.body.content
+//         }
+//       });
+
+//       res.json(updatedPost);
+//     } catch (error) {
+//       next(error);
+//     }
+//   }
+// );
 
 export default router;

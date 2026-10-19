@@ -1,8 +1,8 @@
-import type { Request, Response, NextFunction } from "express";
-import { ZodType } from "zod";
+import { Request, Response, NextFunction } from "express";
+import { z, ZodType } from "zod";
+import { validationError } from "../errors/apperror.ts";
 
-type Target = "body" | "params" | "query";
-
+export type Target = "body" | "params" | "query";
 declare global {
   namespace Express {
     interface Request {
@@ -10,25 +10,16 @@ declare global {
     }
   }
 }
-
 export function validate(schema: ZodType, target: Target) {
-  return (req: Request, res: Response, next: NextFunction) => {
+  return (req: Request, _res: Response, next: NextFunction) => {
     const result = schema.safeParse(req[target]);
 
     if (!result.success) {
-      return res.status(400).json({
-        error: {
-          code: "VALIDATION_ERROR",
-          message: "Request validation failed",
-          details: {
-            fields: result.error.flatten().fieldErrors,
-          },
-        },
-      });
+      const { fieldErrors, formErrors } = z.flattenError(result.error);
+      return next(validationError(fieldErrors, formErrors));
     }
 
     req.validated = { ...req.validated, [target]: result.data };
-
     next();
   };
 }
