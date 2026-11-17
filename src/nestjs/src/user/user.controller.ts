@@ -9,22 +9,32 @@ import {
   Put,
   Query,
   UseGuards,
+  UseInterceptors,
 } from "@nestjs/common";
 import { CreateUserDto } from "./dto/create-user.dto.js";
 import { UserService } from "./user.service.js";
-import { RoleGuard } from "../guards/role.guard.js";
+import { RoleGuard } from "../guards/role.guard.ts";
 import { UpdateUserDto } from "./dto/update-user.dto.js";
+import { TimeoutInterceptor } from "../utils/timeout.interceptor.ts";
+import { LoggingInterceptor } from "../utils/logging.interceptor.ts";
 
+@UseInterceptors(LoggingInterceptor)
 @Controller("user")
 export class UserController {
   constructor(private readonly userService: UserService) {}
-  @Get()
-  getUsers(@Query("name") name: string) {
-    return this.userService.findAllUsers(name);
-  }
 
+  @Get()
+  async findAll(@Query("name") name?: string) {
+    const data = await this.userService.findAllUsers(name);
+    return data;
+  }
+  @Get("all")
+  getAllUsers() {
+    return this.userService.findAll();
+  }
   @Get(":id")
-  getUserById(@Param("id") id: number) {
+  @UseInterceptors(new TimeoutInterceptor())
+  getUserById(@Param("id", ParseIntPipe) id: number) {
     return this.userService.findOneUserById(id);
   }
 

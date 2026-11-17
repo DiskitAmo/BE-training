@@ -11,37 +11,17 @@ const prisma = new PrismaClient({ adapter });
 async function main() {
   // DELETE OLD DATA
   //await prisma.user.deleteMany();
-  // const users = await prisma.user.createMany({
-  //   data: [
-  //     {
-  //       name: "John Doe",
-  //       email: "john@example.com",
-  //       isAdmin: false,
-  //       preferences: {
-  //         theme: "dark",
-  //         notifications: true,
-  //       },
-  //     },
-  //     {
-  //       name: "Jane Smith",
-  //       email: "jane@example.com",
-  //       isAdmin: true,
-  //       preferences: {
-  //         theme: "light",
-  //         notifications: false,
-  //       },
-  //     },
-  //     {
-  //       name: "Alice Brown",
-  //       email: "alice@example.com",
-  //       isAdmin: false,
-  //       preferences: {
-  //         theme: "dark",
-  //         notifications: true,
-  //       },
-  //     },
-  //   ],
-  // });
+  const users = await prisma.user1.createMany({
+    data: [
+      { name: "John", email: "john@example.com" },
+      { name: "Jane", email: "jane@example.com" },
+      { name: "Doe", email: "doe@example.com" },
+      { name: "Johny", email: "jonny@example.com" },
+      { name: "boby", email: "boby@example.com" },
+      { name: "charlie", email: "charlie@example.com" },
+    ],
+  });
+  console.log("All users:", users);
   // findMany()
   //const users = await prisma.user.findMany();
   //console.log("All users:", users);
@@ -163,23 +143,23 @@ async function main() {
 
   // console.log(posts);
 
-  await prisma.blogPost.createMany({
-    data: [
-      {
-        title: "First post",
-        content: "Hello",
-        status: "published",
-        authorId: 1,
-      },
-      { title: "Second post", content: "World", status: "draft", authorId: 1 },
-      {
-        title: "Third post",
-        content: "Again",
-        status: "published",
-        authorId: 2,
-      },
-    ],
-  });
+  // await prisma.blogPost.createMany({
+  //   data: [
+  //     {
+  //       title: "First post",
+  //       content: "Hello",
+  //       status: "published",
+  //       authorId: 1,
+  //     },
+  //     { title: "Second post", content: "World", status: "draft", authorId: 1 },
+  //     {
+  //       title: "Third post",
+  //       content: "Again",
+  //       status: "published",
+  //       authorId: 2,
+  //     },
+  //   ],
+  // });
 }
 
 main()

@@ -7,6 +7,11 @@ import {
 import { Response } from "express";
 import { map, Observable } from "rxjs";
 
+export interface WrappedResponse<T> {
+  data: T;
+  timestamp: string;
+}
+//ResponseInterceptor
 @Injectable()
 export class TransformInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
@@ -14,10 +19,15 @@ export class TransformInterceptor implements NestInterceptor {
     const statusCode = response.statusCode ?? 200; // Default to 200 if statusCode is undefined
 
     return next.handle().pipe(
-      map((data: any) => ({
-        statusCode,
-        message: "Success",
-        data,
+      // map((data: any) => ({
+      //   statusCode,
+      //   message: "Success",
+      //   data,
+      // })),
+      map((data) => ({
+        //task 8d
+        data: data ?? null,
+        timestamp: new Date().toISOString(),
       })),
     );
   }

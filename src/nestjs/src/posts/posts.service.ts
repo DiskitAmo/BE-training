@@ -42,9 +42,9 @@ export class PostsService {
     return post;
   }
 
-  findAuthorByPostId(postId: number): User {
+  async findAuthorByPostId(postId: number) {
     const post = this.findOne(postId);
-    const author = this.usersService.findOneUserById(post.authorId);
+    const author = await this.usersService.findOneUserById(post.authorId);
 
     if (!author) {
       throw new NotFoundException(`User with ID ${post.authorId} not found`);

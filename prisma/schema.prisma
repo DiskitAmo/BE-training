@@ -55,6 +55,9 @@ model Post1 {
   authorId  Int
   author    User1      @relation(fields: [authorId], references: [id])
   comments  Comment[]
+  // published Boolean @default(false)
+  // authorId  Int
+  // author    User1   @relation(fields: [authorId], references: [id])
 }
 
 model Comment {
@@ -94,7 +97,6 @@ model RefreshToken {
   expiresAt DateTime
   revokedAt DateTime?
   createdAt DateTime  @default(now())
-
   user Usernew @relation(fields: [userId], references: [id],onDelete: Cascade)
 
   @@index([userId])

@@ -2,7 +2,8 @@ import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module.js";
 import { ValidationPipe } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { TransformInterceptor } from "./utils/transform.interceptor.js";
+import { PrismaExceptionFilter } from "./user/filter/prisma-exception.filter.ts";
+import { LoggingInterceptor } from "./utils/logging.interceptor.ts";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -13,7 +14,11 @@ async function bootstrap() {
       transform: true, // convert plain objects into DTO class instances
     }),
   );
-  app.useGlobalInterceptors(new TransformInterceptor());
+  app.useGlobalInterceptors(
+    new LoggingInterceptor(),
+  );
+  app.useGlobalFilters(new PrismaExceptionFilter());
+
   const config = app.get(ConfigService);
   const port = config.getOrThrow<number>("PORT");
 

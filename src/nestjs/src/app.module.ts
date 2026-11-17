@@ -5,16 +5,19 @@ import { UserModule } from "./user/user.module.js";
 import { UserController } from "./user/user.controller.js";
 import { ApiKeyMiddleware } from "./middleware/api-key.middleware.js";
 import { ScopesDemoModule } from "./scope-demo.js";
-import { HealthModule } from "./health/health.module.js";
+import { HealthModule } from "./health/health.module.ts";
 import { PostsModule } from "./posts/posts.module.js";
 import {
   AppConfig,
   ConfigLoggerService,
-} from "./config/config-logger.service.js";
+} from "./config/config-logger.service.ts";
 
 import { ConfigModule, ConfigService } from "@nestjs/config";
+import { APP_INTERCEPTOR } from "@nestjs/core";
 import { resolve } from "node:path";
 import Joi from "joi";
+import { LoggingInterceptor } from "./utils/logging.interceptor.ts";
+import { TransformInterceptor } from "./utils/transform.interceptor.ts";
 
 @Module({
   imports: [
@@ -49,6 +52,8 @@ import Joi from "joi";
 
     ConfigLoggerService,
     AppService,
+    { provide: APP_INTERCEPTOR, useClass: LoggingInterceptor },
+    { provide: APP_INTERCEPTOR, useClass: TransformInterceptor },
   ],
 })
 export class AppModule implements NestModule {
